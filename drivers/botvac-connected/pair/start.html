@@ -1,60 +1,60 @@
 <script>
-var authURL;
-function fetchAuthUrl() {
-	document.getElementById('authorize').disabled = true;
-	Homey.emit( 'authorize', null, function( err, data ){
-			authURL = data.url;
-			document.getElementById('authorize').disabled = false;
-	});
-}
+	var authURL
 
-function isAuthorized() {
-	Homey.emit('authorized', function(err, authorized) {
-		// Re-fetch url, just to be sure
-		fetchAuthUrl();
+	function fetchAuthUrl() {
+		document.getElementById('authorize').disabled = true
+		Homey.emit('authorize', null, function(err, data) {
+			authURL = data.url
+			document.getElementById('authorize').disabled = false
+		})
+	}
 
-		if(authorized) {
-			console.log('Authorized');
-			Homey.showView('list_devices');
-		}
-		else
-		{
-			console.log('Not (yet) authorized');
-			document.getElementById('authorize-container').style.display='block';
-		}
-	});
-}
+	function isAuthorized() {
+		Homey.emit('authorized', function(err, authorized) {
+			// Re-fetch url, just to be sure
+			fetchAuthUrl()
 
-Homey.on('authorized', function () {
-	isAuthorized();
-});
+			if (authorized) {
+				console.log('Authorized')
+				Homey.showView('list_devices')
+			} else {
+				console.log('Not (yet) authorized')
+				document.getElementById('authorize-container').style.display = 'block'
+			}
+		})
+	}
 
-fetchAuthUrl();
-isAuthorized();
+	Homey.on('authorized', function() {
+		isAuthorized()
+	})
+
+	fetchAuthUrl()
+	isAuthorized()
 </script>
 <style>
-#authorize-container {
-	display: none;
-}
+	#authorize-container {
+		display: none
+	}
 
-button, .button, select {
-    padding: .5em .75em;
-    font-size: 12px;
-    font-family: inherit;
-    font-weight: inherit;
-    border: 1px solid #ccc;
-    background: #eee;
-    border-radius: 3px;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-    height: 30px;
-}
+	button,
+	.button,
+	select {
+		padding: .5em .75em
+		font-size: 12px
+		font-family: inherit
+		font-weight: inherit
+		border: 1px solid #ccc
+		background: #eee
+		border-radius: 3px
+		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1)
+		height: 30px
+	}
 </style>
 <div id="authorize-container">
 	<p data-i18n="settings.auth.authorize_intro"></p>
 
 	<fieldset>
 		<legend data-i18n="settings.auth.auth_title"></legend>
-		<button onclick="window.open(authURL);" id="authorize" data-i18n="settings.auth.authorize"
-				disabled="disabled"></button>
+		<button onclick="window.open(authURL)" id="authorize" data-i18n="settings.auth.authorize" disabled="disabled"></button>
 	</fieldset>
 </div>

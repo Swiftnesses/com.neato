@@ -1,394 +1,353 @@
 {
-	"id": "nl.joolee.neato",
-	"name": {
-		"en": "Neato Robotics"
-	},
-	"version": "0.0.1",
-	"compatibility": "0.x || 1.x",
-	"author": {
-		"name": "Peter Overtoom",
-		"email": "athom@joolee.nl"
-	},
-	"contributors": {
-		"developers": [{
-			"name": "Mark Swift",
-			"email": "markaswift@gmail.com"
-		}]
-	},
-	"drivers": [{
-		"id": "botvac-connected",
-		"name": {
-			"en": "Botvac Connected"
-		},
-		"class": "vacuumcleaner",
-		"capabilities": [ "vacuumcleaner_state", "measure_battery" ],
-		"pair": [{
-			"id": "start"
-		}, {
-			"id": "list_devices",
-			"template": "list_devices",
-			"navigation": {
-				"next": "add_devices"
-			}
-		}, {
-			"id": "add_devices",
-			"template": "add_devices"
-		}],
-		"settings": [
-			{
-				"type": "group",
-				"label": {
-					"en": "Robot information"
-				},
-				"children": [
-					{
-						"id": "name",
-						"type": "label",
-						"label": {
-							"en": "Name"
-						},
-						"value": "N/A",
-						"hint": {
-							"en": "The name of your robot vacuum as reported by the Neato API. You can change this via the Neato website or mobile app if required (we're currently unable to do this via the API)."
-						}
-					}, {
-						"id": "model",
-						"type": "label",
-						"label": {
-							"en": "Model"
-						},
-						"value": "N/A",
-						"hint": {
-							"en": "The model of your robot vacuum."
-						}
-					}, {
-						"id": "serial",
-						"type": "label",
-						"label": {
-							"en": "Serial"
-						},
-						"value": "N/A",
-						"hint": {
-							"en": "The serial number of your robot vacuum."
-						}
-					}
-				]
-			}, {
-				"type": "group",
-				"label": {
-					"en": "API settings",
-					"nl": "API-instellingen"
-				},
-				"children": [
-					{
-						"id": "polling_interval",
-						"type": "number",
-						"label": {
-							"en": "Polling interval",
-							"nl": "Polling interval"
-						},
-						"value": 5,
-						"hint": {
-							"en": "Homey will ask the Neato Robotics server every x seconds for status updates.",
-							"nl": "Homey zal elke x seconden de status van je stofzuiger opvragen bij de Neato Robotics server."
-						}
-					}
-				]
-			}
-		],
-		"mobile": {
-            "components": [
-                {
-                    "id": "battery",
-                    "capabilities": [ "measure_battery" ]
-                },
-				{
-					"capabilities": [ ],
-					"id": "icon"
-				},
-				{
-					"capabilities": [ "vacuumcleaner_state"	],
-					"id": "picker"
-				}
-            ]
-        }
-	}],
-	"flow": {
-		"actions": [{
-			"id": "start_house_cleaning",
-			"title": {
-				"en": "Start house cleaning"
-			},
-			"args": [{
-				"name": "device",
-				"type": "device",
-				"filter": "driver_id=botvac-connected"
-			}, {
-				"name": "cleaning_mode",
-				"type": "dropdown",
-				"values": [{
-					"id": "false",
-					"label": {
-						"en": "Turbo"
-					}
-				}, {
-					"id": "true",
-					"label": {
-						"en": "Eco"
-					}
-				}]
-			}, {
-				"name": "cleaning_frequency",
-				"type": "dropdown",
-				"values": [{
-					"id": "false",
-					"label": {
-						"en": "1 Pass"
-					}
-				}, {
-					"id": "true",
-					"label": {
-						"en": "2 Pass"
-					}
-				}]
-			}]
-		}, {
-			"id": "stop_cleaning",
-			"title": {
-				"en": "Stop cleaning"
-			},
-			"args": [{
-				"name": "device",
-				"type": "device",
-				"filter": "driver_id=botvac-connected"
-			}]
-		}, {
-			"id": "pause_cleaning",
-			"title": {
-				"en": "Pause cleaning"
-			},
-			"args": [{
-				"name": "device",
-				"type": "device",
-				"filter": "driver_id=botvac-connected"
-			}]
-		}, {
-			"id": "resume_cleaning",
-			"title": {
-				"en": "Resume cleaning"
-			},
-			"args": [{
-				"name": "device",
-				"type": "device",
-				"filter": "driver_id=botvac-connected"
-			}]
-		}, {
-			"id": "send_to_base",
-			"title": {
-				"en": "Send to base"
-			},
-			"args": [{
-				"name": "device",
-				"type": "device",
-				"filter": "driver_id=botvac-connected"
-			}]
-		}, {
-			"id": "start_spot_cleaning",
-			"title": {
-				"en": "Start spot cleaning"
-			},
-			"args": [{
-				"name": "device",
-				"type": "device",
-				"filter": "driver_id=botvac-connected"
-			}, {
-				"name": "cleaning_mode",
-				"type": "dropdown",
-				"values": [{
-					"id": "false",
-					"label": {
-						"en": "Turbo"
-					}
-				}, {
-					"id": "true",
-					"label": {
-						"en": "Eco"
-					}
-				}]
-			}, {
-				"name": "cleaning_frequency",
-				"type": "dropdown",
-				"values": [{
-					"id": "false",
-					"label": {
-						"en": "1 Pass"
-					}
-				}, {
-					"id": "true",
-					"label": {
-						"en": "2 Pass"
-					}
-				}]
-			}, {
-				"name": "spot_width",
-				"type": "range",
-				"min": 100,
-				"max": 400,
-				"step": 1,
-				"label": "cm (Width)",
-				"labelDecimals": 0
-			}, {
-				"name": "spot_height",
-				"type": "range",
-				"min": 100,
-				"max": 400,
-				"step": 1,
-				"label": "cm (Height)",
-				"labelDecimals": 0
-			}]
-		}],
-        "conditions": [
-            {
-                "id": "busy",
-                "title": {
-                    "en": "!{{Is busy|Is not busy}}"
-                },
-                "args": [
-                    {
-                        "name": "device",
-                        "type": "device",
-                        "filter": "driver_id=botvac-connected"
-                    }
-                ]
-            }, {
-                "id": "docked",
-                "title": {
-                    "en": "!{{Is docked|Is not docked}}"
-                },
-                "args": [
-                    {
-                        "name": "device",
-                        "type": "device",
-                        "filter": "driver_id=botvac-connected"
-                    }
-                ]
-            }, {
-                "id": "charging",
-                "title": {
-                    "en": "!{{Is charging|Is not charging}}"
-                },
-                "args": [
-                    {
-                        "name": "device",
-                        "type": "device",
-                        "filter": "driver_id=botvac-connected"
-                    }
-                ]
-            }, {
-                "id": "paused",
-                "title": {
-                    "en": "!{{Is paused|Is not paused}}"
-                },
-                "args": [
-                    {
-                        "name": "device",
-                        "type": "device",
-                        "filter": "driver_id=botvac-connected"
-                    }
-                ]
+    "id": "nl.joolee.neato",
+    "name": {
+        "en": "Neato Robotics"
+    },
+    "version": "0.0.1",
+    "compatibility": "0.x || 1.x",
+    "author": {
+        "name": "Peter Overtoom",
+        "email": "athom@joolee.nl"
+    },
+    "contributors": {
+        "developers": [{
+            "name": "Mark Swift",
+            "email": "markaswift@gmail.com"
+        }]
+    },
+    "drivers": [{
+        "id": "botvac-connected",
+        "name": {
+            "en": "Botvac Connected"
+        },
+        "class": "vacuumcleaner",
+        "capabilities": ["vacuumcleaner_state", "measure_battery"],
+        "pair": [{
+            "id": "start"
         }, {
-                "id": "stopped",
-                "title": {
-                    "en": "!{{Is stopped|Is not stopped}}"
-                },
-                "args": [
-                    {
-                        "name": "device",
-                        "type": "device",
-                        "filter": "driver_id=botvac-connected"
-                    }
-                ]
+            "id": "list_devices",
+            "template": "list_devices",
+            "navigation": {
+                "next": "add_devices"
             }
-        ],
-        "triggers": [
-            {
-                "id": "enters_dock",
-                "title": {
-                    "en": "Enters dock"
+        }, {
+            "id": "add_devices",
+            "template": "add_devices"
+        }],
+        "settings": [{
+            "type": "group",
+            "label": {
+                "en": "Robot information"
+            },
+            "children": [{
+                "id": "name",
+                "type": "label",
+                "label": {
+                    "en": "Name"
                 },
-                "args": [
-                    {
-                        "name": "device",
-                        "type": "device",
-                        "filter": "driver_id=botvac-connected"
-                    }
-                ]
-			},
-			{
-                "id": "leaves_dock",
-                "title": {
-                    "en": "Leaves dock"
+                "value": "N/A",
+                "hint": {
+                    "en": "The name of your robot vacuum as reported by the Neato API. You can change this via the Neato website or mobile app if required (we're currently unable to do this via the API)."
+                }
+            }, {
+                "id": "model",
+                "type": "label",
+                "label": {
+                    "en": "Model"
                 },
-                "args": [
-                    {
-                        "name": "device",
-                        "type": "device",
-                        "filter": "driver_id=botvac-connected"
-                    }
-                ]
-			},
-            {
-                "id": "state_stops_cleaning",
-                "title": {
-                    "en": "Stops cleaning"
+                "value": "N/A",
+                "hint": {
+                    "en": "The model of your robot vacuum."
+                }
+            }, {
+                "id": "serial",
+                "type": "label",
+                "label": {
+                    "en": "Serial"
                 },
-                "args": [
-                    {
-                        "name": "device",
-                        "type": "device",
-                        "filter": "driver_id=botvac-connected"
-                    }
-                ]
-			},
-            {
-                "id": "state_starts_cleaning",
-                "title": {
-                    "en": "Starts cleaning"
+                "value": "N/A",
+                "hint": {
+                    "en": "The serial number of your robot vacuum."
+                }
+            }]
+        }, {
+            "type": "group",
+            "label": {
+                "en": "API settings",
+                "nl": "API-instellingen"
+            },
+            "children": [{
+                "id": "polling_interval",
+                "type": "number",
+                "label": {
+                    "en": "Polling interval",
+                    "nl": "Polling interval"
                 },
-                "args": [
-                    {
-                        "name": "device",
-                        "type": "device",
-                        "filter": "driver_id=botvac-connected"
+                "value": 5,
+                "hint": {
+                    "en": "Homey will ask the Neato Robotics server every x seconds for status updates.",
+                    "nl": "Homey zal elke x seconden de status van je stofzuiger opvragen bij de Neato Robotics server."
+                }
+            }]
+        }],
+        "mobile": {
+            "components": [{
+                "id": "battery",
+                "capabilities": ["measure_battery"]
+            }, {
+                "capabilities": [],
+                "id": "icon"
+            }, {
+                "capabilities": ["vacuumcleaner_state"],
+                "id": "picker"
+            }]
+        }
+    }],
+    "flow": {
+        "actions": [{
+            "id": "start_house_cleaning",
+            "title": {
+                "en": "Start house cleaning"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }, {
+                "name": "cleaning_mode",
+                "type": "dropdown",
+                "values": [{
+                    "id": "false",
+                    "label": {
+                        "en": "Turbo"
                     }
-                ]
-			},
-            {
-                "id": "state_paused",
-                "title": {
-                    "en": "Pauses cleaning"
-                },
-                "args": [
-                    {
-                        "name": "device",
-                        "type": "device",
-                        "filter": "driver_id=botvac-connected"
+                }, {
+                    "id": "true",
+                    "label": {
+                        "en": "Eco"
                     }
-                ]
-			},
-            {
-                "id": "state_error",
-                "title": {
-                    "en": "Emits Error"
-                },
-                "args": [
-                    {
-                        "name": "device",
-                        "type": "device",
-                        "filter": "driver_id=botvac-connected"
+                }]
+            }, {
+                "name": "cleaning_frequency",
+                "type": "dropdown",
+                "values": [{
+                    "id": "false",
+                    "label": {
+                        "en": "1 Pass"
                     }
-                ]
-			}
-		]
-	}
+                }, {
+                    "id": "true",
+                    "label": {
+                        "en": "2 Pass"
+                    }
+                }]
+            }]
+        }, {
+            "id": "stop_cleaning",
+            "title": {
+                "en": "Stop cleaning"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "pause_cleaning",
+            "title": {
+                "en": "Pause cleaning"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "resume_cleaning",
+            "title": {
+                "en": "Resume cleaning"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "send_to_base",
+            "title": {
+                "en": "Send to base"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "start_spot_cleaning",
+            "title": {
+                "en": "Start spot cleaning"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }, {
+                "name": "cleaning_mode",
+                "type": "dropdown",
+                "values": [{
+                    "id": "false",
+                    "label": {
+                        "en": "Turbo"
+                    }
+                }, {
+                    "id": "true",
+                    "label": {
+                        "en": "Eco"
+                    }
+                }]
+            }, {
+                "name": "cleaning_frequency",
+                "type": "dropdown",
+                "values": [{
+                    "id": "false",
+                    "label": {
+                        "en": "1 Pass"
+                    }
+                }, {
+                    "id": "true",
+                    "label": {
+                        "en": "2 Pass"
+                    }
+                }]
+            }, {
+                "name": "spot_width",
+                "type": "range",
+                "min": 100,
+                "max": 400,
+                "step": 1,
+                "label": "cm (Width)",
+                "labelDecimals": 0
+            }, {
+                "name": "spot_height",
+                "type": "range",
+                "min": 100,
+                "max": 400,
+                "step": 1,
+                "label": "cm (Height)",
+                "labelDecimals": 0
+            }]
+        }],
+        "conditions": [{
+            "id": "busy",
+            "title": {
+                "en": "!{{Is busy|Is not busy}}"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "docked",
+            "title": {
+                "en": "!{{Is docked|Is not docked}}"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "charging",
+            "title": {
+                "en": "!{{Is charging|Is not charging}}"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "paused",
+            "title": {
+                "en": "!{{Is paused|Is not paused}}"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "stopped",
+            "title": {
+                "en": "!{{Is stopped|Is not stopped}}"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }],
+        "triggers": [{
+            "id": "enters_dock",
+            "title": {
+                "en": "Enters dock"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "leaves_dock",
+            "title": {
+                "en": "Leaves dock"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "state_stops_cleaning",
+            "title": {
+                "en": "Stops cleaning"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "state_starts_cleaning",
+            "title": {
+                "en": "Starts cleaning"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "state_paused",
+            "title": {
+                "en": "Pauses cleaning"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }, {
+            "id": "state_error",
+            "title": {
+                "en": "Emits Error"
+            },
+            "args": [{
+                "name": "device",
+                "type": "device",
+                "filter": "driver_id=botvac-connected"
+            }]
+        }]
+    }
 }

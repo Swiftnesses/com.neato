@@ -1,113 +1,117 @@
 <!doctype html>
 <html>
+
 <head>
 </head>
-<body>
-<h1 data-i18n="settings.title"></h1>
 
-<div id="content">
-    <div id="account-container">
-        <fieldset>
-            <legend data-i18n="settings.auth.connected_header"></legend>
-			
-			<p data-i18n="settings.auth.connected_with"></p>
-			<table id="account">
-				<tr>
-					<th><span data-i18n="settings.account.name"></span>: </th>
-					<td id="accountname"></td>
-				</tr>
-				<!--<tr>
+<body>
+    <h1 data-i18n="settings.title"></h1>
+
+    <div id="content">
+        <div id="account-container">
+            <fieldset>
+                <legend data-i18n="settings.auth.connected_header"></legend>
+
+                <p data-i18n="settings.auth.connected_with"></p>
+                <table id="account">
+                    <tr>
+                        <th><span data-i18n="settings.account.name"></span>: </th>
+                        <td id="accountname"></td>
+                    </tr>
+                    <!--<tr>
 					<th><span data-i18n="settings.account.company"></span>: </th>
 					<td id="accountcompany"></td>
 				</tr>-->
-			</table>
+                </table>
 
-		<div id="deauthorize-container">
-			<p data-i18n="settings.auth.deauthorize_intro"></p>
+                <div id="deauthorize-container">
+                    <p data-i18n="settings.auth.deauthorize_intro"></p>
 
-			<button onclick="Homey.api('PUT', '/deauthorize/');"
-					id="deauthorize" data-i18n="settings.auth.deauthorize"></button>
-			
-			<p id="deauthorize_notice" data-i18n="settings.auth.deauthorize_notice"></p>
-		</div>
-        </fieldset>
+                    <button onclick="Homey.api('PUT', '/deauthorize/')" id="deauthorize" data-i18n="settings.auth.deauthorize"></button>
+
+                    <p id="deauthorize_notice" data-i18n="settings.auth.deauthorize_notice"></p>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="authorize-container">
+            <p data-i18n="settings.auth.authorize_intro"></p>
+
+            <fieldset>
+                <legend data-i18n="settings.auth.auth_title"></legend>
+                <button onclick="window.open(authURL)" id="authorize" data-i18n="settings.auth.authorize" disabled="disabled"></button>
+            </fieldset>
+            <p id="deauthorize_notice" data-i18n="settings.auth.deauthorize_notice"></p>
+        </div>
+
+
+        <p data-i18n="settings.warning" id="warning" style="display:none"></p>
     </div>
-	
-    <div id="authorize-container">
-        <p data-i18n="settings.auth.authorize_intro"></p>
 
-        <fieldset>
-            <legend data-i18n="settings.auth.auth_title"></legend>
-            <button onclick="window.open(authURL);" id="authorize" data-i18n="settings.auth.authorize"
-                    disabled="disabled"></button>
-        </fieldset>
-		<p id="deauthorize_notice" data-i18n="settings.auth.deauthorize_notice"></p>
-    </div>
+    <script type="text/javascript">
+        var authURL
 
-
-    <p data-i18n="settings.warning" id="warning" style="display:none;"></p>
-</div>
-
-<script type="text/javascript">
-    var authURL;
-    function fetchAuthUrl() {
-        document.getElementById('authorize').disabled = true;
-        Homey.api('PUT', '/authorize/', {}, function (err, data) {
-            if (!err && typeof data === 'object') {
-                authURL = data.url;
-                document.getElementById('authorize').disabled = false;
-            }
-        });
-    }
-    function onHomeyReady() {
-        Homey.get('authorized', function (err, result) {
-			console.log(err, result);
-            setAuthorizationState(!err && result);
-            Homey.ready();
-        });
-        fetchAuthUrl();
-        Homey.on('authorized', function (isAuthorized) {
-            setAuthorizationState(isAuthorized);
-        });
-    }
-    var deauthorizeContainer = document.getElementById('account-container');
-    var authorizeContainer = document.getElementById('authorize-container');
-    function setAuthorizationState(isAuthorized) {
-        fetchAuthUrl(); // Refresh auth url in background
-		if (isAuthorized) {
-            var accountContainer = document.getElementById('account');
-            authorizeContainer.style.display = 'none';
-            deauthorizeContainer.style.display = 'block';
-            Homey.get('user', function (err, user) {
-                document.getElementById('accountname').innerHTML = user.first_name + " " + user.last_name;
-                // document.getElementById('accountcompany').innerHTML = user.company.length ? user.company : '-';
-            });
-        } else {
-            deauthorizeContainer.style.display = 'none';
-            authorizeContainer.style.display = 'block';
+        function fetchAuthUrl() {
+            document.getElementById('authorize').disabled = true
+            Homey.api('PUT', '/authorize/', {}, function(err, data) {
+                if (!err && typeof data === 'object') {
+                    authURL = data.url
+                    document.getElementById('authorize').disabled = false
+                }
+            })
         }
-    }
-</script>
-<style>
-#deauthorize-container {
-	margin-top: 15px;
-}
 
-#deauthorize_notice,
-deauthorize_notice {
-	margin-top: 15px;
-}
+        function onHomeyReady() {
+            Homey.get('authorized', function(err, result) {
+                console.log(err, result)
+                setAuthorizationState(!err && result)
+                Homey.ready()
+            })
+            fetchAuthUrl()
+            Homey.on('authorized', function(isAuthorized) {
+                setAuthorizationState(isAuthorized)
+            })
+        }
+        var deauthorizeContainer = document.getElementById('account-container')
+        var authorizeContainer = document.getElementById('authorize-container')
 
-#deauthorize_notice a {
-	color: black;
-}
+        function setAuthorizationState(isAuthorized) {
+            fetchAuthUrl() // Refresh auth url in background
+            if (isAuthorized) {
+                var accountContainer = document.getElementById('account')
+                authorizeContainer.style.display = 'none'
+                deauthorizeContainer.style.display = 'block'
+                Homey.get('user', function(err, user) {
+                    document.getElementById('accountname').innerHTML = user.first_name + " " + user.last_name
+                    // document.getElementById('accountcompany').innerHTML = user.company.length ? user.company : '-'
+                })
+            } else {
+                deauthorizeContainer.style.display = 'none'
+                authorizeContainer.style.display = 'block'
+            }
+        }
+    </script>
+    <style>
+        #deauthorize-container {
+            margin-top: 15px
+        }
 
-th {
-	text-align: left;
-	font-weight: 900;
-	font-weight: 900 !important;
-	padding-right: 25px;
-}
-</style>
+        #deauthorize_notice,
+        deauthorize_notice {
+            margin-top: 15px
+        }
+
+        #deauthorize_notice a {
+            color: black
+        }
+
+        th {
+            text-align: left
+            font-weight: 900
+            font-weight: 900 !important
+            padding-right: 25px
+        }
+    </style>
 </body>
+
 </html>

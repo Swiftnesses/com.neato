@@ -1,22 +1,22 @@
 {
-	"settings": {
-		"title": "Neato Robotics settings",
-		"warning": "Something went wrong, please try again",
-		"auth": {
-			"connected_header": "Account information",
-			"connected_with": "You're currently logged in with Neato Robotics account:",
-			"authorize_intro": "To give Homey access to your Neato account, click the button below!",
-			"authorize_notice": "If you cannot login with a new account. Try logging in to <a href=\"https://neatorobotics.com/log-in/\">My Neato</a> and revoke application access on the 'Edit Account' page.",
-			"auth_title": "Authorize Homey",
-			"deauth_title": "Deauthorize Homey",
-			"deauthorize_notice": "Note: It's not possible for us to completely revoke access. We do erase the access token. You can completely revoke access on the 'Edit Account' page on <a href=\"https://neatorobotics.com/log-in/\">My Neato</a>.",
-			"deauthorize_intro": "If you want to disconnect Homey from your Neato account, click the button below.",
-			"deauthorize": "Deauthorize access to your Neato account",
-			"authorize": "Authorize access to your Neato account"
-		},
-		"account": {
-			"name": "Name",
-			"company": "Company"			
-		}
-	}
+    "settings": {
+        "title": "Neato Robotics settings",
+        "warning": "Something went wrong, please try again",
+        "auth": {
+            "connected_header": "Account information",
+            "connected_with": "You're currently logged in with Neato Robotics account:",
+            "authorize_intro": "To give Homey access to your Neato account, click the button below!",
+            "authorize_notice": "If you cannot login with a new account. Try logging in to <a href=\"https://neatorobotics.com/log-in/\">My Neato</a> and revoke application access on the 'Edit Account' page.",
+            "auth_title": "Authorize Homey",
+            "deauth_title": "Deauthorize Homey",
+            "deauthorize_notice": "Note: It's not possible for us to completely revoke access. We do erase the access token. You can completely revoke access on the 'Edit Account' page on <a href=\"https://neatorobotics.com/log-in/\">My Neato</a>.",
+            "deauthorize_intro": "If you want to disconnect Homey from your Neato account, click the button below.",
+            "deauthorize": "Deauthorize access to your Neato account",
+            "authorize": "Authorize access to your Neato account"
+        },
+        "account": {
+            "name": "Name",
+            "company": "Company"
+        }
+    }
 }
